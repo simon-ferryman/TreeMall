@@ -1,0 +1,65 @@
+# ============================================
+# TreeMall — 本地开发环境 Docker Compose
+# 仅启动 MySQL + Redis，Spring Boot 在 IDE 中运行
+# 启动命令: docker compose -f docker-compose.dev.yml up -d
+# 停止命令: docker compose -f docker-compose.dev.yml down
+# ============================================
+
+services:
+  # ==========================================
+  # MySQL 8.0 — 本地开发数据库
+  # ==========================================
+  mysql-dev:                                          # 服务名，可自定义
+    image: mysql:8.0                                  # 使用 MySQL 8.0 官方镜像
+    container_name: treemall-mysql-dev                # 容器名称，方便识别
+    restart: unless-stopped                           # 除非手动停止，否则自动重启
+
+    environment:                                      # 环境变量，初始化数据库用
+      MYSQL_ROOT_PASSWORD: root                       # root 用户密码
+      MYSQL_DATABASE: tree_mall                       # 自动创建名为 tree_mall 的数据库
+      MYSQL_USER: mall_user                           # 额外创建一个普通用户
+      MYSQL_PASSWORD: 123456                          # 普通用户密码
+      TZ: Asia/Shanghai                               # 时区设为上海
+    command: --default-authentication-plugin=mysql_native_password  # 使用兼容的认证插件，解决 JDBC 连接问题
+    ports:
+      - "3307:3306"                                   # 宿主机3307 → 容器3306（你的3306被占用）
+    volumes:
+      - treemall-mysql-dev-data:/var/lib/mysql        # 数据持久化：容器删除后数据不丢
+      - ./db/init:/docker-entrypoint-initdb.d         # 启动时自动执行此目录下的SQL脚本
+    healthcheck:                                      # 健康检查：确保MySQL真正就绪
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s                                   # 每10秒检查一次
+      timeout: 5s                                     # 超时5秒算失败
+      retries: 5                                      # 失败5次后标记为 unhealthy
+    networks:
+      - treemall-dev-network                          # 加入自定义网络，容器间可互相通信
+
+  # ==========================================
+  # Redis 7 — 本地开发缓存
+  # ==========================================
+  redis-dev:                                          # 服务名
+    image: redis:7-alpine                             # 使用 Alpine 精简版 Redis 7
+    container_name: treemall-redis-dev                # 容器名称
+    restart: unless-stopped                           # 自动重启策略
+    command: redis-server --appendonly yes            # 开启 AOF 持久化，重启后数据不丢
+    ports:
+      - "6379:6379"                                   # 宿主机6379 → 容器6379
+    volumes:
+      - treemall-redis-dev-data:/data                 # 持久化 Redis 数据
+    healthcheck:                                      # 健康检查
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - treemall-dev-network
+
+# ===== 数据卷：容器删除后数据仍然保留 =====
+volumes:
+  treemall-mysql-dev-data:                            # MySQL 数据卷
+  treemall-redis-dev-data:                            # Redis 数据卷
+
+# ===== 自定义网络：让 MySQL 和 Redis 可以互相通信 =====
+networks:
+  treemall-dev-network:
+    driver: bridge                                    # 桥接网络模式

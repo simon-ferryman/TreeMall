@@ -1,0 +1,113 @@
+/**
+ * uni.scss — 全局 SCSS 变量和混入
+ *
+ * 【设计思想】
+ * uni.scss 是 uni-app 的全局样式变量文件，定义的变量可以在所有页面的 SCSS 中直接使用，
+ * 无需在每个文件中 @import（uni-app 编译器会自动注入）。
+ *
+ * 【颜色体系 — 基于 Figma 设计稿精确提取】
+ * Figma 设计稿使用 Apple iOS 原生设计语言：
+ * - 主色 #007AFF（Apple 系统蓝，用于按钮、链接、选中状态）
+ * - 主文字 #1D1D1F（iOS 系统深色文字，用于标题、正文）
+ * - 次要文字 #8E8E93（iOS 系统灰色文字，用于描述、提示）
+ * - 页面背景 #ffffff（iOS 系统分组背景色）
+ * - 卡片背景 #FFFFFF（白色）
+ * - 分隔线 #f2f2f5（iOS 系统分隔线色）
+ *
+ * 【rpx 换算规则】
+ * Figma 设计稿宽度 375px，rpx 基准 750rpx = 屏幕宽度
+ * 换算公式：rpx = Figma px × 2
+ */
+
+/* ==================== 1. 引入 uView UI 主题变量 ==================== */
+@import 'uview-plus/theme.scss';
+
+/* ==================== 2. 项目自定义颜色变量（基于 Figma 精确提取） ==================== */
+/* 主色调 — Figma: #007AFF (Apple Blue) */
+$primary-color: #007AFF;           /* 主题蓝：按钮、选中状态、强调文字 */
+$primary-light: #E5F1FF;           /* 浅蓝背景：卡片选中态背景（#007AFF 10%透明度近似） */
+$primary-dark: #0062CC;            /* 深蓝：按钮按下态（#007AFF 加深 20%） */
+
+/* 辅助色 */
+$success-color: #34C759;           /* 成功绿：支付成功、状态标签（iOS Green） */
+$warning-color: #FF9500;           /* 警告橙：待处理状态（iOS Orange） */
+$danger-color: #FF3B30;            /* 危险红：删除按钮、错误提示（iOS Red） */
+$info-color: #8E8E93;              /* 信息灰：中性提示 */
+
+/* 文字颜色 — Figma 精确值 */
+$text-color: #1D1D1F;              /* 主文字色：标题、正文 */
+$text-muted: #8E8E93;              /* 次要文字色：描述、提示、时间 */
+$text-light: #C7C7CC;              /* 浅色文字：占位符、禁用态 */
+
+/* 背景色 — Figma 精确值 */
+$bg-color: #ffffff;               /* 页面背景色：全局页面底色（iOS Grouped Background） */
+$bg-white: #f4f4f7;               /* 卡片/容器背景色：白色  */
+$bg-gray: #e4e4e8;                /* 浅灰背景：分隔区域 */
+
+/* 边框色 — Figma 精确值 */
+$border-color: #E5E5EA;            /* 默认边框色（iOS Separator） */
+$border-light: #F2F2F7;            /* 浅色边框：卡片内部分隔 */
+
+/* ==================== 3. 间距变量（Figma 设计稿 px × 2 = rpx） ==================== */
+$spacing-xs: 8rpx;                 /* Figma 4px → 8rpx：极小间距 */
+$spacing-sm: 16rpx;                /* Figma 8px → 16rpx：小间距 */
+$spacing-md: 24rpx;                /* Figma 12px → 24rpx：中等间距 */
+$spacing-lg: 32rpx;                /* Figma 16px → 32rpx：大间距 */
+$spacing-xl: 48rpx;                /* Figma 24px → 48rpx：超大间距 */
+
+/* ==================== 4. 圆角变量（Figma 设计稿 px × 2 = rpx） ==================== */
+$radius-sm: 12rpx;                 /* Figma 6px → 12rpx：小圆角、标签 */
+$radius-md: 16rpx;                 /* Figma 8px → 16rpx：中圆角、卡片、按钮 */
+$radius-lg: 24rpx;                 /* Figma 12px → 24rpx：大圆角、弹窗 */
+$radius-xl: 32rpx;                 /* Figma 16px → 32rpx：超大圆角 */
+$radius-round: 50%;                /* 圆形：头像 */
+
+/* ==================== 5. 字体变量（Figma 设计稿 px × 2 = rpx） ==================== */
+$font-xs: 20rpx;                   /* Figma 10px → 20rpx：极小字体 */
+$font-sm: 24rpx;                   /* Figma 12px → 24rpx：小字体、标签 */
+$font-md: 28rpx;                   /* Figma 14px → 28rpx：正文字体 */
+$font-lg: 32rpx;                   /* Figma 16px → 32rpx：大字体、标题 */
+$font-xl: 36rpx;                   /* Figma 18px → 36rpx：超大字体、价格 */
+$font-xxl: 40rpx;                  /* Figma 20px → 40rpx：巨大字体、金额 */
+$font-title: 56rpx;                /* Figma 28px → 56rpx：页面标题 */
+
+/* 字重 — Figma 精确值 */
+$font-weight-normal: 400;          /* Regular */
+$font-weight-medium: 500;          /* Medium */
+$font-weight-bold: 600;            /* Semibold（Figma 主要使用的粗体） */
+$font-weight-heavy: 700;           /* Bold */
+
+/* ==================== 6. 阴影变量（基于 Figma 效果提取） ==================== */
+$shadow-sm: 0 2rpx 6rpx rgba(0, 0, 0, 0.04);    /* 小阴影：卡片 */
+$shadow-md: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);   /* 中阴影：浮动元素 */
+$shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.10);    /* 大阴影：弹窗 */
+
+/* ==================== 7. 常用混入（Mixin） ==================== */
+/* 单行文本溢出省略 → 超长文字显示... */
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 多行文本溢出省略 → 如商品标题最多显示 2 行 */
+@mixin text-ellipsis-multi($lines: 2) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 弹性布局水平垂直居中 */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 安全区域底部适配 → 适配 iPhone X 及以上的底部 Home Indicator */
+@mixin safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}

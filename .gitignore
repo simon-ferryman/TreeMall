@@ -1,0 +1,48 @@
+# ===== TreeMall .gitignore =====
+
+# 编译输出（target 目录下全是编译产物，不需要提交）
+target/
+*.class
+*.jar
+*.war
+!gradle-wrapper.jar
+
+# ── npm 依赖 ──
+treemall-mp/node_modules/
+treemall-mp/.hbuilderx/
+treemall-mp/unpackage/
+treemall-mp/dist/
+
+
+# IDE 文件（每个人的 IDE 配置不同，不需要提交）
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+*.swp
+*.swo
+
+
+# 敏感配置（包含密钥，绝对不能提交）
+.env
+*.pem
+*.key
+application.yml
+application-dev.yml
+# 日志
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.swp
+*.bak
+
+# 备份文件
+backups/
+
+# ── 操作系统 ──
+.DS_Store
+Thumbs.db

@@ -1,0 +1,39 @@
+{
+    "name" : "TreeMall",
+    "appid" : "_UNI_wxe018e1910ca02855", // 微信小程序 AppID（开发阶段用测试号，发布时替换）
+    "description" : "TreeMall 电商小程序",
+    "versionName" : "1.0.0",
+    "versionCode" : "100",
+    // ===== 微信小程序专属配置 =====
+    "mp-weixin" : {
+        "appid" : "wxe018e1910ca02855", // 替换为你的微信小程序 AppID
+        "setting" : {
+            "urlCheck" : false, // 开发阶段关闭 URL 校验（允许请求 localhost）
+            "es6" : true, // 启用 ES6 转 ES5
+            "postcss" : true, // 启用 PostCSS（自动补全 CSS 前缀）
+            "minified" : true // 启用代码压缩
+        },
+        "usingComponents" : true, // 启用自定义组件
+        "lazyCodeLoading" : "requiredComponents", // 按需注入（减少启动时间）
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "用于获取收货地址位置信息" // 位置权限说明
+            }
+        },
+		"requiredPrivateInfos" : [
+		    "chooseLocation",
+		    "chooseAddress"
+		]
+    },
+    // ===== H5 配置（如需在浏览器中预览） =====
+    "h5" : {
+        "devServer" : {
+            "port" : 8080, // H5 开发服务器端口
+            "disableHostCheck" : true // 禁用主机检查（允许局域网访问）
+        },
+        "router" : {
+            "mode" : "hash" // 路由模式：hash（#/pages/index）兼容性更好
+        }
+    },
+    "vueVersion" : "3"
+}
